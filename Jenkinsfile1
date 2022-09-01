@@ -1,0 +1,11 @@
+node {
+    stage('Git'){
+      git 'https://github.com/styagi935/hello-world.git'      
+    }
+    
+    stage('Maven Build'){
+      sh 'mvn clean package'   
+    }
+    stage('Archive Artifacts'){
+         archiveArtifacts 'target/myweb.war'
+    }
