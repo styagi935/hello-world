@@ -1,11 +1,20 @@
-node {
-    stage('Git'){
-      git 'https://github.com/styagi935/hello-world.git'      
-    }
+pipeline{
+    agent any
     
-    stage('Maven Build'){
-      sh 'mvn clean package'   
+    environment{
+        PATH = "/opt/maven3/bin:$PATH"
     }
-    stage('Archive Artifacts'){
-         archiveArtifacts 'target/myweb.war'
-    }
+    stages{
+        stage("Git Checkout"){
+            steps{
+                git credentialsId: 'github', url: 'https://github.com/javahometech/myweb'
+            }
+        }
+        stage("Maven Build"){
+            steps{
+                sh "mvn clean package"
+                sh "mv target/*.war target/myweb.war"
+            }
+        }
+     }
+}
